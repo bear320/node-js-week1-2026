@@ -14,8 +14,19 @@ const fs = require("fs/promises");
 async function readMembers(filePath) {
   // TODO: 實作此函式
   // 提示：用 fs/promises 的 readFile，記得加 'utf-8'，再用 JSON.parse 轉成物件
-  const members = await fs.readFile(filePath, "utf-8");
-  return JSON.parse(members);
+  // const members = await fs.readFile(filePath, "utf-8");
+  // return JSON.parse(members);
+
+  try {
+    const members = await fs.readFile(filePath, "utf-8");
+    return JSON.parse(members);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      console.log(`檔案不存在：${filePath}`);
+      return [];
+    }
+    throw error;
+  }
 }
 
 // ========== 任務二：篩選 VIP 會員 ==========
